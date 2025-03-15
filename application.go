@@ -3,6 +3,8 @@ package main
 import "net/http"
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {})
-	http.ListenAndServe("", nil)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+	http.ListenAndServe(":5000", nil)
 }
