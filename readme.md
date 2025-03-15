@@ -432,11 +432,11 @@ setting up a Web (Load-Balanced) Environment
     ```
 
    Execute `eb deploy` for subsequent app version update.
-5. Change autoscaling policy:
+5. Configure autoscaling policy:
      ```
     aws:autoscaling:asg \
     MinSize -> 4 \
-    Availability Zones -> 2
+    Availability Zones -> Any
      
     Observe event shows instances added:
    ```
