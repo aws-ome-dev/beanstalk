@@ -3,7 +3,7 @@
 setting up a Web (Load-Balanced) Environment
 
 1. Install eb cli `pip install awsebcli` \
-    binary will be installed in `/Users/<USER>/Library/Python/3.9/bin/eb`
+   binary will be installed in `/Users/<USER>/Library/Python/3.9/bin/eb`
 2. initialize EB application `eb init` \
     ```sh
     Select a default region
@@ -414,7 +414,7 @@ setting up a Web (Load-Balanced) Environment
     2025-03-15 12:22:33    INFO    createEnvironment is starting.
     2025-03-15 12:22:35    INFO    Using elasticbeanstalk-ap-northeast-1-69
     ```
-   
+
 4. After `eb create`, health should be green (healthy):
     ```
     ➜  beanstalk git:(main) ✗ /Users/<USER>/Library/Python/3.9/bin/eb status
@@ -428,7 +428,20 @@ setting up a Web (Load-Balanced) Environment
       CNAME: beanstalk-dev.ap-northeast-1.elasticbeanstalk.com
       Updated: 2025-03-15 12:27:07.024000+00:00
       Status: Ready
-      Health: Grey
+      Health: Green
     ```
-   
-    Execute `eb deploy` for subsequent app version update.
+
+   Execute `eb deploy` for subsequent app version update.
+5. Change autoscaling policy:
+     ```
+    aws:autoscaling:asg \
+    MinSize -> 4 \
+    Availability Zones -> 2
+     
+    Observe event shows instances added:
+   ```
+
+   ```
+   Added instances [i-007c74c2c76ea5493, i-0472e43afa0cc4b19] to your environment.
+   ```
+    
