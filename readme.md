@@ -415,7 +415,7 @@ setting up a Web (Load-Balanced) Environment
     2025-03-15 12:22:35    INFO    Using elasticbeanstalk-ap-northeast-1-69
     ```
    
-4. After `eb create`, health should be grey (suspended):
+4. After `eb create`, health should be green (healthy):
     ```
     ➜  beanstalk git:(main) ✗ /Users/<USER>/Library/Python/3.9/bin/eb status
     Environment details for: beanstalk-dev
