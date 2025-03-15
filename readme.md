@@ -431,4 +431,4 @@ setting up a Web (Load-Balanced) Environment
       Health: Grey
     ```
    
-    Execute `eb deploy`
+    Execute `eb deploy` for subsequent app version update.
