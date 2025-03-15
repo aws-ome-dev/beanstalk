@@ -2,9 +2,11 @@
 
 setting up a Web (Load-Balanced) Environment
 
-1. Install eb cli `pip install awsebcli` \
+1. ![architecture.png](architecture.png)
+
+2. Install eb cli `pip install awsebcli` \
    binary will be installed in `/Users/<USER>/Library/Python/3.9/bin/eb`
-2. initialize EB application `eb init` \
+3. initialize EB application `eb init` \
     ```sh
     Select a default region
     9) ap-northeast-1 : Asia Pacific (Tokyo)
@@ -37,7 +39,7 @@ setting up a Web (Load-Balanced) Environment
     ...
     ```
 
-3. create EB environment `eb create`
+4. create EB environment `eb create`
     ```
    ➜  beanstalk git:(main) ✗ /Users/<USER>/Library/Python/3.9/bin/eb create
     Enter Environment Name
@@ -415,7 +417,7 @@ setting up a Web (Load-Balanced) Environment
     2025-03-15 12:22:35    INFO    Using elasticbeanstalk-ap-northeast-1-69
     ```
 
-4. After `eb create`, health should be green (healthy):
+5. After `eb create`, health should be green (healthy):
     ```
     ➜  beanstalk git:(main) ✗ /Users/<USER>/Library/Python/3.9/bin/eb status
     Environment details for: beanstalk-dev
@@ -432,16 +434,33 @@ setting up a Web (Load-Balanced) Environment
     ```
 
    Execute `eb deploy` for subsequent app version update.
-5. Configure autoscaling policy:
+6. Configure autoscaling policy:
      ```
     aws:autoscaling:asg \
-    MinSize -> 4 \
-    Availability Zones -> Any
+   MinSize: 3
+   EnableCapacityRebalancing: true
+   Custom Availability Zones: ap-northeast-1a,ap-northeast-1c,ap-northeast-1d
      
-    Observe event shows instances added:
    ```
-
+   Observe event shows instances added:
    ```
-   Added instances [i-007c74c2c76ea5493, i-0472e43afa0cc4b19] to your environment.
+   Added instances [...] to your environment.
    ```
-    
+   
+   `eb open` or `curl <env_url>` will display minimum of 3 different numbers 
+7. Teardown: 
+   ```
+   ➜  beanstalk git:(main) ✗ /Users/<User>/Library/Python/3.9/bin/eb terminate
+   The environment "beanstalk-dev" and all associated instances will be terminated.
+   To confirm, type the environment name: beanstalk-dev
+   2025-03-15 15:54:15    INFO    terminateEnvironment is starting.
+   2025-03-15 15:54:16    INFO    Validating environment's EC2 instances have termination protection disabled before performing termination.
+   2025-03-15 15:54:17    INFO    Finished validating environment's EC2 instances for termination protection.
+   2025-03-15 15:54:34    INFO    Deleted Load Balancer listener named: arn:aws:elasticloadbalancing:ap-northeast-1:692859948557:listener/app/awseb--AWSEB-M7EBckKPSl66/d47164fb3ca9b1a7/84466104f8e30412
+   2025-03-15 15:54:34    INFO    Deleted CloudWatch alarm named: awseb-e-faf9srpxty-stack-AWSEBCloudwatchAlarmLow-wRBHJKhaQ0mD 
+   2025-03-15 15:54:34    INFO    Deleted CloudWatch alarm named: awseb-e-faf9srpxty-stack-AWSEBCloudwatchAlarmHigh-yuV6nMwMSq3O 
+   2025-03-15 15:54:34    INFO    Deleted Auto Scaling group policy named: arn:aws:autoscaling:ap-northeast-1:692859948557:scalingPolicy:6df7f552-5175-4458-8f60-4ccac362d8e0:autoScalingGroupName/awseb-e-faf9srpxty-stack-AWSEBAutoScalingGroup-OI0MNtF54SoC:policyName/awseb-e-faf9srpxty-stack-AWSEBAutoScalingScaleUpPolicy-YFSPe5ZQFY26
+   2025-03-15 15:54:34    INFO    Deleted Auto Scaling group policy named: arn:aws:autoscaling:ap-northeast-1:692859948557:scalingPolicy:8449871d-51f3-4501-b854-0af2feca448c:autoScalingGroupName/awseb-e-faf9srpxty-stack-AWSEBAutoScalingGroup-OI0MNtF54SoC:policyName/awseb-e-faf9srpxty-stack-AWSEBAutoScalingScaleDownPolicy-AitUdPwyN9A8
+   2025-03-15 15:54:34    INFO    Waiting for EC2 instances to terminate. This may take a few minutes.
+   ```
+   
